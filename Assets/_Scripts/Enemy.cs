@@ -1,18 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnCollisionEnter2D(Collision2D col)
     {
-        
-    }
+        if (PlayerLauncher.instance.Player == null)
+            return;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (col.relativeVelocity.magnitude > 2 && PlayerLauncher.instance.Player.launching)
+        {
+            GameManager.instance.DestroyEnemy(this);
+        }
     }
 }

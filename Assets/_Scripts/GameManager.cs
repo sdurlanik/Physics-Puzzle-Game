@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
 
     [SerializeField] private List<GameObject> _availablePlayers = new List<GameObject>();
+    [SerializeField] private List<Enemy> _enemies = new List<Enemy>();
 
     public static GameManager instance;
 
@@ -28,6 +29,20 @@ public class GameManager : MonoBehaviour
 
     public void PlayerFinished()
     {
-        SpawnNewPlayer();
+        //SpawnNewPlayer();
+        if (_availablePlayers.Count > 0 && _enemies.Count > 0)
+        {
+            GameUI.instance.NextPlayerButton.SetActive(true);
+        }
+        else
+        {
+            GameUI.instance.SetEndScreen(_enemies.Count == 0);
+        }
+    }
+
+    public void DestroyEnemy(Enemy enemy)
+    {
+        _enemies.Remove(enemy);
+        Destroy(enemy.gameObject);
     }
 }

@@ -13,6 +13,8 @@ public class PlayerLauncher : MonoBehaviour
 
     public static PlayerLauncher instance;
 
+    public Player Player => _player;
+
     private void Awake()
     {
         instance = this;
@@ -25,11 +27,11 @@ public class PlayerLauncher : MonoBehaviour
 
     private void Update()
     {
-        if (_player == null)
+        if (Player == null)
             return;
         
 
-        if (InputDown() && !_player.launching)
+        if (InputDown() && !Player.launching)
         {
             Vector3 touchWorldPosition;
 
@@ -44,7 +46,7 @@ public class PlayerLauncher : MonoBehaviour
 
             touchWorldPosition.z = 0;
 
-            if (Vector3.Distance(touchWorldPosition, _player.transform.position) <= 3.0f)
+            if (Vector3.Distance(touchWorldPosition, Player.transform.position) <= 3.0f)
             {
                 _holdingPlayer = true;
             }
@@ -53,10 +55,10 @@ public class PlayerLauncher : MonoBehaviour
         if (InputUp() && _holdingPlayer)
         {
             _holdingPlayer = false;
-            _player.Launch(_playerStartPos.position - _player.transform.position);
+            Player.Launch(_playerStartPos.position - Player.transform.position);
         }
 
-        if (_holdingPlayer && !_player.launching)
+        if (_holdingPlayer && !Player.launching)
         {
             Vector3 newPos;
 
@@ -70,7 +72,7 @@ public class PlayerLauncher : MonoBehaviour
             }
 
             newPos.z = 0;
-            _player.transform.position = newPos;
+            Player.transform.position = newPos;
         }
         
     }
@@ -110,6 +112,6 @@ public class PlayerLauncher : MonoBehaviour
     public void SetNewPlayer(GameObject playerPrefab)
     {
         _player = Instantiate(playerPrefab, _playerStartPos.position, Quaternion.identity).GetComponent<Player>();
-        CameraController.instance.SetPlayer(_player);
+        CameraController.instance.SetPlayer(Player);
     }
 }
